@@ -1,14 +1,18 @@
 from typing import Optional
-
+from fastapi.responses import HTMLResponse 
 from fastapi import FastAPI
 
 app = FastAPI()
 
 
 @app.get("/")
-async def root():
-    return {"message": "Hello World"}
-
-@app.get("/items/{item_id}")
-def read_item(item_id: int, q: Optional[str] = None):
-    return {"item_id": item_id, "q": q}
+async def show_message(name: str = "World", message: str = "I want to be friend"):
+    html_content = """
+        <html>
+            <head><title>Web service </title></head>
+            <body>
+                <p>Hello """ + name + """! """ + message + """!
+            </body>
+        </html>
+    """
+    return HTMLResponse(content = html_content, status_code = 200) 
